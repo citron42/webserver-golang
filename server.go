@@ -1,3 +1,6 @@
+// Simple web server in golang
+// Note trad : Handler = module
+
 package main
 
 import (
@@ -20,7 +23,7 @@ func helloHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Hello !")
 }
 
-func formHandler(w http.ResponseWriter, r *http.Request) {
+func formHandler(w http.ResponseWriter, r *http.Request) { // only for form if you want to use it
 	if err := r.ParseForm(); err != nil {
 		fmt.Fprintf(w, "ParseForm() err: %v", err)
 		return
@@ -35,7 +38,10 @@ func formHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	fileServer := http.FileServer(http.Dir("./static"))
+	fileServer := http.FileServer(http.Dir("./static")) // create a new file server which will serve files from the current directory
+
+	// Don't forget to add http.Handle() line whenever you add a new webpage
+
 	http.Handle("/", fileServer)
 	http.HandleFunc("/form", formHandler)
 	http.HandleFunc("/hello", helloHandler)
